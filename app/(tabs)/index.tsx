@@ -116,7 +116,7 @@ export default function HomeScreen() {
           <Text style={styles.statsTitle}>Why Choose Us?</Text>
           <View style={styles.statsGrid}>
             <StatBox number={`${properties.length}+`} label="Properties You'll Love" />
-            <StatBox number="2+" label="Cities & Growing" />
+            <StatBox number="18+" label="Cities & Growing" />
             <StatBox number="1000+" label="Happy Tenants" />
             <StatBox number="24/7" label="Support Available" />
           </View>
