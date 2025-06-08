@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.31.39:3000/api';
-export const STATIC_URL = 'http://192.168.31.39:3000';
+const BASE_URL = 'http://172.20.10.3:3000/api';
+export const STATIC_URL = 'http://172.20.10.3:3000';
 
 // Types
 export interface Comment {

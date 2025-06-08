@@ -7,10 +7,11 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,22 +19,29 @@ export default function SearchScreen() {
   const insets = useSafeAreaInsets();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchAll = async () => {
+    setLoading(true);
+    try {
+      const results = await getAllPosts(); // no filters
+      setProperties(results);
+    } catch (error) {
+      console.error('Error fetching properties:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAll = async () => {
-      setLoading(true);
-      try {
-        const results = await getAllPosts(); // no filters
-        setProperties(results);
-      } catch (error) {
-        console.error('Error fetching properties:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAll();
   }, []);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchAll();
+    setRefreshing(false);
+  };
 
   const renderProperty = ({ item }: { item: Property }) => (
     <TouchableOpacity onPress={() => router.push(`/property/${item.id}`)}>
@@ -62,6 +70,9 @@ export default function SearchScreen() {
             keyExtractor={(item) => item.id.toString()}
             numColumns={1}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            }
             contentContainerStyle={styles.listContainer}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
